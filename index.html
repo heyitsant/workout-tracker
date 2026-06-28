@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Workout Tracker v1.6.1</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Workout" />
+  <meta name="theme-color" content="#111827" />
+  <style>
+    :root{--bg:#f4f6fb;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--danger:#dc2626;--ok:#16a34a;--shadow:0 10px 26px rgba(17,24,39,.08)}
+    *{box-sizing:border-box} html{font-size:16px} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:920px;margin:0 auto;padding:22px 14px 80px}.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.title h1{margin:0;font-size:2rem}.version{color:var(--muted);font-size:.95rem;margin-top:4px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 16px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:700;white-space:nowrap}.tab.active{background:var(--text);color:#fff}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px;overflow:hidden}.card h2{font-size:1.8rem;margin:0 0 12px}.hint{font-size:1.05rem;line-height:1.35;color:var(--muted);margin:0 0 18px}.field{margin-bottom:16px;min-width:0}.field label{display:block;color:var(--muted);font-weight:800;margin-bottom:8px}.input, input, select, textarea{width:100%;max-width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--line);border-radius:18px;background:#fff;color:var(--text);font:inherit;padding:14px 16px;display:block}.date-input{width:100%;max-width:100%;min-width:0;display:block;text-align:center;font-size:1.25rem;line-height:1.2;-webkit-appearance:none;appearance:none}.exercise{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}.exercise h3{margin:0 0 8px;font-size:1.15rem}.target{color:var(--muted);font-size:.95rem;margin-bottom:10px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.grid.cardio{grid-template-columns:repeat(3,minmax(0,1fr))}.grid label{font-size:.8rem;color:var(--muted);font-weight:800}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.btn{border:0;border-radius:16px;padding:14px 16px;font-weight:800;font-size:1rem;background:var(--accent);color:#fff}.btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}.btn.danger{background:var(--danger)}.btn.ok{background:var(--ok)}.history-item{border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;background:#fff}.history-item strong{display:block;margin-bottom:4px}.small{font-size:.9rem;color:var(--muted)}.footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:24px}@media(max-width:650px){.wrap{padding:18px 10px 70px}.card{border-radius:22px;padding:18px;overflow:hidden}.card h2{font-size:1.6rem}.hint{font-size:1rem}.grid,.grid.cardio{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr}.date-input{font-size:1.2rem;padding:14px 12px}.top{display:block}.title h1{font-size:1.7rem}}  
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top"><div class="title"><h1>Workout Tracker</h1><div class="version">v1.6.1</div></div></div>
+    <div class="tabs" id="tabs"></div>
+    <section class="card" id="workoutCard"></section>
+    <section class="card"><h2>History</h2><div class="actions"><button class="btn secondary" id="exportBtn">Export JSON</button><button class="btn secondary" id="importBtn">Import JSON</button><button class="btn danger" id="clearBtn">Clear saved data</button></div><input id="importFile" type="file" accept="application/json" hidden><div id="history"></div></section>
+    <div class="footer">Data is saved only in this browser/device unless you export or connect external storage.</div>
+  </main>
+<script>
+const VERSION='1.6.1';
+const workouts={
+ 'Full Body A':{note:'Strength: record weight and reps/time separately. Cardio: record exercise, level/resistance, speed/pace and duration.',strength:[['Leg Press','3 sets × 8–12 reps'],['Chest Press','3 sets × 8–12 reps'],['Seated Row','3 sets × 8–12 reps'],['Dumbbell Romanian Deadlift','3 sets × 8–12 reps'],['Plank','3 rounds']],cardio:[['Steady Cardio','10–20 minutes']]},
+ 'Full Body B':{note:'Keep the effort controlled. Add weight only when all sets feel solid.',strength:[['Goblet Squat','3 sets × 8–12 reps'],['Lat Pulldown','3 sets × 8–12 reps'],['Shoulder Press','3 sets × 8–12 reps'],['Hamstring Curl','3 sets × 10–15 reps'],['Dead Bug','3 rounds']],cardio:[['Steady Cardio','10–20 minutes']]},
+ 'Full Body C':{note:'Use this as the third weekly session. Prioritise form over load.',strength:[['Split Squat or Step-up','3 sets × 8–10 each leg'],['Incline Dumbbell Press','3 sets × 8–12 reps'],['Cable Row','3 sets × 8–12 reps'],['Hip Thrust','3 sets × 8–12 reps'],['Side Plank','3 rounds each side']],cardio:[['Steady Cardio','10–20 minutes']]}
+};
+let current=localStorage.getItem('wt_current')||'Full Body A';
+const key='workout_tracker_v161_logs';
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const pretty=d=>new Date(d+'T00:00:00').toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+function renderTabs(){ $('tabs').innerHTML=Object.keys(workouts).map(n=>`<button class="tab ${n===current?'active':''}" onclick="setWorkout('${n}')">${n}</button>`).join(''); }
+function setWorkout(n){current=n;localStorage.setItem('wt_current',n);render();}
+function render(){renderTabs(); const w=workouts[current]; let html=`<h2>${current}</h2><p class="hint">${w.note}</p><div class="field"><label for="date">Date</label><input class="date-input" id="date" type="date" value="${today()}"></div>`;
+ w.strength.forEach((e,i)=>{html+=`<div class="exercise"><h3>${e[0]}</h3><div class="target">${e[1]}</div><div class="grid"><div><label>Weight</label><input id="s${i}w" placeholder="kg"></div><div><label>Set 1</label><input id="s${i}r1" placeholder="reps/time"></div><div><label>Set 2</label><input id="s${i}r2" placeholder="reps/time"></div><div><label>Set 3</label><input id="s${i}r3" placeholder="reps/time"></div></div></div>`});
+ w.cardio.forEach((e,i)=>{html+=`<div class="exercise"><h3>${e[0]}</h3><div class="target">${e[1]}</div><div class="grid cardio"><div><label>Exercise</label><input id="c${i}e" placeholder="bike/treadmill"></div><div><label>Level/speed</label><input id="c${i}l" placeholder="level/pace"></div><div><label>Duration</label><input id="c${i}d" placeholder="minutes"></div></div></div>`});
+ html+=`<div class="field exercise"><label>Notes</label><textarea id="notes" rows="4" placeholder="How did it feel? Any pain, wins or changes?"></textarea></div><div class="actions"><button class="btn ok" onclick="saveLog()">Save workout</button><button class="btn secondary" onclick="render()">Reset form</button></div>`; $('workoutCard').innerHTML=html; renderHistory();}
+function getLogs(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch{return []}}
+function setLogs(v){localStorage.setItem(key,JSON.stringify(v));}
+function saveLog(){const w=workouts[current]; const log={version:VERSION,workout:current,date:$('date').value||today(),created:new Date().toISOString(),strength:[],cardio:[],notes:$('notes').value}; w.strength.forEach((e,i)=>log.strength.push({exercise:e[0],target:e[1],weight:$(`s${i}w`).value,set1:$(`s${i}r1`).value,set2:$(`s${i}r2`).value,set3:$(`s${i}r3`).value})); w.cardio.forEach((e,i)=>log.cardio.push({exercise:$(`c${i}e`).value||e[0],level:$(`c${i}l`).value,duration:$(`c${i}d`).value})); const logs=getLogs(); logs.unshift(log); setLogs(logs); render(); alert('Workout saved');}
+function renderHistory(){const logs=getLogs(); $('history').innerHTML=logs.length?logs.slice(0,20).map(l=>`<div class="history-item"><strong>${pretty(l.date)} — ${l.workout}</strong><div class="small">${(l.notes||'No notes').replace(/[<>&]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))}</div></div>`).join(''):'<p class="small">No saved workouts yet.</p>';}
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(getLogs(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='workout-tracker-export.json'; a.click(); URL.revokeObjectURL(a.href);};
+$('importBtn').onclick=()=>$('importFile').click(); $('importFile').onchange=e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{try{const data=JSON.parse(r.result); if(!Array.isArray(data)) throw new Error('Not an array'); setLogs(data); renderHistory(); alert('Import complete');}catch{alert('Could not import that JSON file');}}; r.readAsText(f);};
+$('clearBtn').onclick=()=>{if(confirm('Delete all saved workout data on this device?')){localStorage.removeItem(key);renderHistory();}};
+render();
+</script>
+</body>
+</html>
