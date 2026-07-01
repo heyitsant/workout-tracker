@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#111827" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iMzYiIGZpbGw9IiMxMTE4MjciLz4KPGcgZmlsbD0iI2ZmZmZmZiI+PHJlY3QgeD0iMjIiIHk9IjY4IiB3aWR0aD0iMTgiIGhlaWdodD0iNDQiIHJ4PSI1Ii8+PHJlY3QgeD0iNDIiIHk9IjU4IiB3aWR0aD0iMTgiIGhlaWdodD0iNjQiIHJ4PSI1Ii8+PHJlY3QgeD0iMTIwIiB5PSI1OCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjY0IiByeD0iNSIvPjxyZWN0IHg9IjE0MCIgeT0iNjgiIHdpZHRoPSIxOCIgaGVpZ2h0PSI0NCIgcng9IjUiLz48cmVjdCB4PSI1OCIgeT0iODIiIHdpZHRoPSI2NCIgaGVpZ2h0PSIxNiIgcng9IjgiLz48L2c+Cjwvc3ZnPg==" />
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMTgwIDE4MCI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iMzYiIGZpbGw9IiMxMTE4MjciLz4KPGcgZmlsbD0iI2ZmZmZmZiI+PHJlY3QgeD0iMjIiIHk9IjY4IiB3aWR0aD0iMTgiIGhlaWdodD0iNDQiIHJ4PSI1Ii8+PHJlY3QgeD0iNDIiIHk9IjU4IiB3aWR0aD0iMTgiIGhlaWdodD0iNjQiIHJ4PSI1Ii8+PHJlY3QgeD0iMTIwIiB5PSI1OCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjY0IiByeD0iNSIvPjxyZWN0IHg9IjE0MCIgeT0iNjgiIHdpZHRoPSIxOCIgaGVpZ2h0PSI0NCIgcng9IjUiLz48cmVjdCB4PSI1OCIgeT0iODIiIHdpZHRoPSI2NCIgaGVpZ2h0PSIxNiIgcng9IjgiLz48L2c+Cjwvc3ZnPg==" />
+<meta name="apple-mobile-web-app-title" content="Workout Tracker" />
+<meta name="application-name" content="Workout Tracker" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>Full Body Workout Tracker V2.1</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#047857;--danger:#b91c1c}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:5;background:rgba(246,247,251,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:14px 14px 10px}
+h1{margin:0 0 6px;font-size:20px} h2{margin-top:0} .subtitle,.small,.version{color:var(--muted);font-size:12px;line-height:1.4} .subtitle{margin:0;font-size:13px} .version{margin-top:6px}
+.authbar{margin-top:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center} .account-menu{position:relative} .menu-panel{display:none;position:absolute;right:0;top:48px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 10px 25px rgba(0,0,0,.12);min-width:220px;z-index:20} .menu-panel.open{display:block} .menu-panel button{width:100%;margin-top:8px} .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+button{border:0;border-radius:12px;padding:11px 12px;font-weight:700;background:#e5e7eb;color:var(--text);cursor:pointer;font-size:15px} button.active{background:var(--accent);color:#fff} button.secondary{background:#fff;border:1px solid var(--line)} button.good{background:var(--good);color:#fff} button.danger{background:var(--danger);color:#fff} button.smallbtn{padding:8px 10px;font-size:13px} button:disabled{opacity:.5;cursor:not-allowed}
+main{padding:14px;max-width:920px;margin:0 auto 90px} .panel{display:none} .panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.exercise-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px} .exercise-title{font-size:17px;font-weight:800;line-height:1.2} .badge{font-size:12px;color:var(--muted);background:#f3f4f6;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.info{background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0;font-size:13px;line-height:1.4} .info.warn{background:#fff7ed;border-color:#fed7aa} .info b{display:block;margin-bottom:3px}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:10px 0 5px} input,textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;font-size:16px;background:#fff;color:var(--text)} textarea{min-height:72px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px} .set-block{border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px;background:#fff} .set-title{font-size:13px;font-weight:800;margin-bottom:4px} .set-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px} .set-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px} .cardio-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;z-index:10}
+.history-item{border-left:4px solid var(--accent);padding-left:10px;margin-bottom:12px} .delete-status{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:10px;margin-top:8px;font-size:13px} pre{white-space:pre-wrap;background:#111827;color:#f9fafb;padding:12px;border-radius:12px;font-size:12px;overflow:auto}
+@media (min-width:760px){.authbar{grid-template-columns:1fr auto;align-items:center} .set-blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px} .set-block{margin-bottom:0} .cardio-grid{grid-template-columns:repeat(4,1fr)} .actions{max-width:920px;left:50%;transform:translateX(-50%);border-radius:18px 18px 0 0}}
+</style>
+</head>
+<body>
+<header>
+<h1>Full Body Workout Tracker</h1>
+<p class="subtitle">A/B routine · remote Firestore save · account menu · local backup only</p>
+<div class="version" id="versionText"></div>
+<div class="authbar">
+  <div id="authStatus" class="small">Checking sign-in…</div>
+  <div class="account-menu">
+    <button id="accountMenuBtn" type="button" class="secondary">☰ Account</button>
+    <div id="accountMenuPanel" class="menu-panel">
+      <div id="accountMenuStatus" class="small">Not signed in</div>
+      <button id="signInBtn" type="button" class="good">Sign in with Google</button>
+      <button id="signOutBtn" type="button" class="danger">Sign out</button>
+    </div>
+  </div>
+</div>
+<div class="tabs"><button id="tabA" class="active" type="button" onclick="showPanel('A')">Workout A</button><button id="tabB" type="button" onclick="showPanel('B')">Workout B</button><button id="tabHistory" type="button" onclick="showPanel('History')">History</button></div>
+</header>
+<main><section id="panelA" class="panel active"></section><section id="panelB" class="panel"></section><section id="panelHistory" class="panel"><div class="card"><h2>Past Workouts</h2><p class="small">Workout history is loaded from Firestore for your signed-in Google account.</p><div id="deleteControls"></div><div id="historyList"></div></div><div class="card"><h2>Export Preview</h2><button class="secondary" type="button" onclick="downloadJson()">Export JSON</button><button class="secondary" type="button" style="margin-top:8px" onclick="copySummary()">Copy feedback summary</button><pre id="exportPreview"></pre></div></section></main>
+<div class="actions"><button class="good" id="saveBtn" type="button" onclick="saveCurrentWorkout()">Save Workout</button><button class="secondary" type="button" onclick="downloadJson()">Export JSON</button></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const STARTER_DATA = {
+  "appVersion": "V2.1",
+  "createdDate": "2026-07-01",
+  "createdFor": "Ant",
+  "routineNotes": [
+    "Alternate Workout A and Workout B. If you train twice in a week, do A then B. If you train three times, do A/B/A then B/A/B the following week.",
+    "Aim for about 60 minutes total: 5 min warm-up, 35\u201340 min lifting, 5\u201310 min core, 10\u201315 min steady cardio.",
+    "Strength exercises show 3 sets by default. Use add/remove set controls if needed.",
+    "Strength sets record weight and reps/time separately. Cardio records exercise type, level/resistance, speed/pace and duration.",
+    "V2.1 stores workout history remotely in Firebase Firestore after Google sign-in."
+  ],
+  "cardioOptions": [
+    "Treadmill incline walk",
+    "Exercise bike",
+    "Cross-trainer",
+    "Rowing machine",
+    "Other"
+  ],
+  "workouts": {
+    "A": {
+      "name": "Full Body A",
+      "exercises": [
+        {
+          "type": "strength",
+          "name": "Back Squat or Leg Press",
+          "sets": 3,
+          "reps": "8\u201310",
+          "previous": "40kg / 12 (squat) \u2014 use 40kg carefully or choose leg press",
+          "cues": "Brace before each rep. Keep chest up. Knees track over toes. Drive through mid-foot. Use leg press if your back feels uncertain.",
+          "coachNotes": "Do not increase yet if lower back confidence is not 100%."
+        },
+        {
+          "type": "strength",
+          "name": "Dumbbell Bench Press",
+          "sets": 3,
+          "reps": "8\u201312",
+          "previous": "14kg / 12, 12, 12",
+          "cues": "Shoulder blades back and down. Feet planted. Lower under control. Press without bouncing.",
+          "coachNotes": "You may try 16kg if 14kg felt controlled and pain-free."
+        },
+        {
+          "type": "strength",
+          "name": "Lat Pulldown",
+          "sets": 3,
+          "reps": "10\u201312",
+          "previous": "29kg / 12, 12, 12",
+          "cues": "Chest proud. Pull elbows toward ribs/hips. Avoid shrugging. Control the return.",
+          "coachNotes": "Stay around 29kg and prioritise shoulder comfort."
+        },
+        {
+          "type": "strength",
+          "name": "Romanian Deadlift",
+          "sets": 3,
+          "reps": "8\u201310",
+          "previous": "40kg / 12 deadlift previously \u2014 start lighter if needed",
+          "cues": "Soft knees. Hips move back. Neutral spine. Stop when hamstrings stretch; do not chase depth.",
+          "coachNotes": "Because of your back, this should feel controlled rather than heavy."
+        },
+        {
+          "type": "strength",
+          "name": "Neutral-Grip Seated Dumbbell Shoulder Press",
+          "sets": 2,
+          "reps": "8\u201312",
+          "previous": "6kg / 10 with some lower-back arching",
+          "cues": "Palms in. Ribs down. Back supported. Brace abs. Stop if your lower back starts helping.",
+          "coachNotes": "Try 5kg \u00d7 12 or 6kg \u00d7 8\u201310 with stricter form."
+        },
+        {
+          "type": "strength",
+          "name": "Cable Triceps Pushdown + Dumbbell Curl",
+          "sets": 2,
+          "reps": "12 each",
+          "previous": "Pushdown 23kg / 12s; Curls 8kg / 12s",
+          "cues": "Superset. Keep elbows fixed. Smooth reps. No shoulder swinging on curls.",
+          "coachNotes": "Hold weights steady until form feels very clean."
+        },
+        {
+          "type": "strength",
+          "name": "Forearm Plank",
+          "sets": 3,
+          "reps": "30\u201345 sec",
+          "previous": "45s, 43s, 45s",
+          "cues": "Ribs down. Glutes tight. Tuck pelvis slightly. Breathe slowly.",
+          "coachNotes": "Quality over duration.",
+          "weightLabel": "Load / variation",
+          "repsLabel": "Time"
+        },
+        {
+          "type": "cardio",
+          "name": "Steady Cardio",
+          "sets": 1,
+          "reps": "10\u201315 min",
+          "previous": "Incline walk / bike / cross-trainer",
+          "cues": "Conversational pace. Slightly breathy but sustainable.",
+          "coachNotes": "Use incline walking if you enjoyed the hill walking."
+        }
+      ]
+    },
+    "B": {
+      "name": "Full Body B",
+      "exercises": [
+        {
+          "type": "strength",
+          "name": "Walking Lunges or Split Squat",
+          "sets": 3,
+          "reps": "8\u201310 each leg",
+          "previous": "7.5kg each hand / 6 reps per leg previously",
+          "cues": "Small controlled steps. Front knee tracks over toes. Keep torso steady.",
+          "coachNotes": "If balance/form feels off, use split squats instead."
+        },
+        {
+          "type": "strength",
+          "name": "Incline Dumbbell Press",
+          "sets": 3,
+          "reps": "8\u201312",
+          "previous": "12kg / 12, 12, 12; slight left elbow pain noted",
+          "cues": "Neutral-ish grip. Wrists straight. Don\u2019t force a hard lockout. Elbows not too flared.",
+          "coachNotes": "Stay at 12kg until elbow feels clear."
+        },
+        {
+          "type": "strength",
+          "name": "Seated Cable Row",
+          "sets": 3,
+          "reps": "10\u201312",
+          "previous": "32kg / 12s",
+          "cues": "Sit tall. Pull elbows back. Pause briefly. Don\u2019t lean back to finish reps.",
+          "coachNotes": "Stay at 32kg and keep the movement strict."
+        },
+        {
+          "type": "strength",
+          "name": "Leg Curl Machine",
+          "sets": 3,
+          "reps": "10\u201312",
+          "previous": "Last known: worked up to 14kg / 12",
+          "cues": "Control the lower. Don\u2019t let the weight stack slam. Keep hips down if lying curl.",
+          "coachNotes": "Replacement for hip thrusts: hamstring/glute work with less spinal loading."
+        },
+        {
+          "type": "strength",
+          "name": "Face Pull",
+          "sets": 2,
+          "reps": "12\u201315",
+          "previous": "23kg / 12s",
+          "cues": "Pull toward upper face. Elbows high. Squeeze shoulder blades. Slow return.",
+          "coachNotes": "Great shoulder-health exercise \u2014 keep this controlled."
+        },
+        {
+          "type": "strength",
+          "name": "Cable Triceps Pushdown + Dumbbell Curl",
+          "sets": 2,
+          "reps": "12 each",
+          "previous": "Pushdown 23kg; Curl 8kg",
+          "cues": "Superset. Keep elbows still. Avoid rushing.",
+          "coachNotes": "Use this as efficient accessory work, not max effort."
+        },
+        {
+          "type": "strength",
+          "name": "Cable Crunch",
+          "sets": 3,
+          "reps": "12\u201315",
+          "previous": "32kg / 12s",
+          "cues": "Round through abs, not hips. Exhale as you crunch. Slow return.",
+          "coachNotes": "Keep it controlled; no yanking with arms."
+        },
+        {
+          "type": "cardio",
+          "name": "Steady Cardio",
+          "sets": 1,
+          "reps": "10\u201315 min",
+          "previous": "Incline walk / bike / cross-trainer",
+          "cues": "Conversational pace. Keep it sustainable.",
+          "coachNotes": "Incline walking, bike or cross-trainer are all fine."
+        }
+      ]
+    }
+  },
+  "history": []
+};
+const firebaseConfig = {
+  apiKey: "AIzaSyAQyadNkzAqRUDEfFINEzaLppPSnRCY2YE",
+  authDomain: "workout-app-28e30.firebaseapp.com",
+  projectId: "workout-app-28e30",
+  storageBucket: "workout-app-28e30.firebasestorage.app",
+  messagingSenderId: "192285968784",
+  appId: "1:192285968784:web:a253dfb5279667a1524b15"
+};
+const LOCAL_BACKUP_KEY = "ant_full_body_workout_tracker_v2_backup";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+let state = clone(STARTER_DATA), currentUser = null, activePanel = "A";
+const setCounts = {};
+function clone(obj){return JSON.parse(JSON.stringify(obj));}
+function setStatus(message){document.getElementById("authStatus").textContent=message;}
+function backupLocal(){localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(state));}
+async function handleSignIn(){try{await signInWithPopup(auth, provider);}catch(error){console.warn("Popup sign-in failed, trying redirect.", error);try{await signInWithRedirect(auth, provider);}catch(e){alert("Sign-in failed: "+e.message);}}}
+async function handleSignOut(){await signOut(auth);}
+async function loadRemoteHistory(){
+  if(!currentUser){state.history=[];renderHistory();return;}
+  setStatus("Loading remote workouts…");
+  const q=query(collection(db,"users",currentUser.uid,"workouts"), orderBy("savedAtMillis","desc"));
+  const snapshot=await getDocs(q);
+  state.history=snapshot.docs.map(d=>({firestoreId:d.id,...d.data()}));
+  backupLocal(); renderHistory();
+  setStatus(`Signed in as ${currentUser.email} · ${state.history.length} remote workout(s) loaded`);
+}
+onAuthStateChanged(auth, async(user)=>{
+  currentUser=user;
+  document.getElementById("signInBtn").style.display=user?"none":"block";
+  document.getElementById("signOutBtn").style.display=user?"block":"none";
+  document.getElementById("accountMenuStatus").textContent = user ? `Signed in as ${user.email}` : "Not signed in";
+  document.getElementById("saveBtn").disabled=!user;
+  if(user){try{await loadRemoteHistory();}catch(e){console.error(e);setStatus("Signed in, but Firestore load failed. Check rules/Firestore setup.");alert("Firestore load failed: "+e.message);}}
+  else{state.history=[];renderHistory();setStatus("Not signed in · sign in to save/load remote workouts");}
+});
+getRedirectResult(auth).catch(err=>console.warn("Redirect result error",err));
+function showPanel(panel){activePanel=panel;["A","B","History"].forEach(p=>{document.getElementById("panel"+p).classList.toggle("active",p===panel);document.getElementById("tab"+p).classList.toggle("active",p===panel);});if(panel==="History")renderHistory();}
+function todayIso(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10);}
+function renderWorkout(key){
+ const workout=state.workouts[key], container=document.getElementById("panel"+key);
+ container.innerHTML=`<div class="card"><h2 style="margin:0 0 6px">${workout.name}</h2><p class="small">Strength: record weight and reps/time separately. Cardio: record exercise, level/resistance, speed/pace and duration.</p><label>Date</label><input id="${key}_date" type="date" value="${todayIso()}"><div class="info warn"><b>Remote storage</b>You must be signed in before saving. Workouts are stored in Firestore under your user ID.</div></div>`;
+ workout.exercises.forEach((ex,idx)=>{const id=`${key}_${idx}`; if(!setCounts[id])setCounts[id]=ex.type==="strength"?Math.max(3,ex.sets||3):0; const card=document.createElement("div"); card.className="card"; card.innerHTML=`<div class="exercise-head"><div class="exercise-title">${escapeHtml(ex.name)}</div><div class="badge">${ex.type==="cardio"?escapeHtml(ex.reps):`${ex.sets} × ${escapeHtml(ex.reps)}`}</div></div><div class="info"><b>Previous / suggestion</b>${escapeHtml(ex.previous||"No previous data")}</div><div class="info"><b>Form cues</b>${escapeHtml(ex.cues||"")}</div><div class="info"><b>Coach note</b>${escapeHtml(ex.coachNotes||"")}</div>${ex.type==="cardio"?cardioFields(key,idx):strengthFields(key,idx,ex)}`; container.appendChild(card);});
+}
+function strengthFields(key,idx,ex){const id=`${key}_${idx}`,count=setCounts[id]||3,weightLabel=ex.weightLabel||"Weight",repsLabel=ex.repsLabel||"Reps";let setsHtml="";for(let n=1;n<=count;n++){setsHtml+=`<div class="set-block"><div class="set-title">Set ${n}</div><div class="set-fields"><div><label>${escapeHtml(weightLabel)}</label><input id="${id}_set${n}_weight" placeholder="e.g. 16kg"></div><div><label>${escapeHtml(repsLabel)}</label><input id="${id}_set${n}_reps" placeholder="e.g. 10"></div></div></div>`;}return `<div class="set-blocks">${setsHtml}</div><div class="set-controls"><button class="secondary smallbtn" type="button" onclick="addSet('${key}', ${idx})">+ Add set</button><button class="secondary smallbtn" type="button" onclick="removeLastSet('${key}', ${idx})">− Remove extra</button></div><div class="grid"><div><label>Form OK?</label><select id="${id}_form"><option value="">Select</option><option>Y</option><option>N</option></select></div><div><label>Pain?</label><select id="${id}_pain"><option value="">Select</option><option>N</option><option>Y</option></select></div></div><label>Your notes</label><textarea id="${id}_notes" placeholder="e.g. Felt strong, elbow sore, back felt fine..."></textarea>`;}
+function cardioFields(key,idx){const id=`${key}_${idx}`,opts=state.cardioOptions.map(o=>`<option>${escapeHtml(o)}</option>`).join("");return `<div class="cardio-grid"><div><label>Cardio exercise</label><select id="${id}_cardioType">${opts}</select></div><div><label>Level / resistance</label><input id="${id}_level" placeholder="e.g. level 5 / incline 8"></div><div><label>Speed / pace</label><input id="${id}_speed" placeholder="e.g. 5.5 km/h"></div><div><label>Duration</label><input id="${id}_duration" placeholder="e.g. 12 min"></div></div><label>Cardio notes</label><textarea id="${id}_notes" placeholder="e.g. Comfortable, hard breathing, steep incline felt good..."></textarea>`;}
+function addSet(key,idx){const id=`${key}_${idx}`;setCounts[id]=(setCounts[id]||3)+1;renderWorkout(key);}
+function removeLastSet(key,idx){const id=`${key}_${idx}`;setCounts[id]=Math.max(3,(setCounts[id]||3)-1);renderWorkout(key);}
+async function saveCurrentWorkout(){
+ if(!currentUser){alert("Please sign in before saving.");return;} if(!["A","B"].includes(activePanel)){alert("Open Workout A or B before saving.");return;}
+ const key=activePanel,workout=state.workouts[key],workoutDate=document.getElementById(`${key}_date`).value||todayIso();
+ const entry={id:(crypto.randomUUID?crypto.randomUUID():Date.now().toString()),date:workoutDate,workoutKey:key,workoutName:workout.name,appVersion:state.appVersion,savedAtMillis:Date.now(),savedAtIso:new Date().toISOString(),userEmail:currentUser.email||"",exercises:workout.exercises.map((ex,idx)=>{const id=`${key}_${idx}`;if(ex.type==="cardio"){return {type:"cardio",name:ex.name,target:ex.reps,cardioExercise:document.getElementById(`${id}_cardioType`).value,level:document.getElementById(`${id}_level`).value,speed:document.getElementById(`${id}_speed`).value,duration:document.getElementById(`${id}_duration`).value,notes:document.getElementById(`${id}_notes`).value};} const count=setCounts[id]||3,sets=[];for(let n=1;n<=count;n++){const weight=document.getElementById(`${id}_set${n}_weight`)?.value||"",reps=document.getElementById(`${id}_set${n}_reps`)?.value||"";if(weight||reps)sets.push({set:n,weight,reps});} return {type:"strength",name:ex.name,target:`${ex.sets} × ${ex.reps}`,previousSuggestion:ex.previous,sets,formOk:document.getElementById(`${id}_form`).value,pain:document.getElementById(`${id}_pain`).value,notes:document.getElementById(`${id}_notes`).value};})};
+ try{document.getElementById("saveBtn").disabled=true;setStatus("Saving workout to Firestore…");const ref=await addDoc(collection(db,"users",currentUser.uid,"workouts"),entry);entry.firestoreId=ref.id;state.history.unshift(entry);updatePreviousSuggestionsFromEntry(key,entry);backupLocal();renderWorkout(key);renderHistory();setStatus(`Saved remotely · signed in as ${currentUser.email}`);alert("Workout saved remotely.");}catch(error){console.error(error);alert("Remote save failed: "+error.message);setStatus("Remote save failed. Check Firebase rules/settings.");}finally{document.getElementById("saveBtn").disabled=!currentUser;}
+}
+function updatePreviousSuggestionsFromEntry(key,entry){entry.exercises.forEach((logged,idx)=>{if(logged.type==="strength"&&logged.sets.length){state.workouts[key].exercises[idx].previous=logged.sets.map(s=>`${s.weight||"-"} / ${s.reps||"-"}`).join(", ");} if(logged.type==="cardio"&&(logged.duration||logged.level||logged.speed)){state.workouts[key].exercises[idx].previous=`${logged.cardioExercise||"Cardio"} — ${logged.duration||""} ${logged.level?"· "+logged.level:""} ${logged.speed?"· "+logged.speed:""}`.trim();}});}
+function renderHistory(){const list=document.getElementById("historyList"),preview=document.getElementById("exportPreview"),controls=document.getElementById("deleteControls");if(!list||!preview||!controls)return;if(!currentUser){controls.innerHTML="";list.innerHTML='<p class="small">Sign in to load remote workout history.</p>';preview.textContent=JSON.stringify({...state,history:[]},null,2);return;} if(!Array.isArray(state.history))state.history=[]; if(!state.history.length){controls.innerHTML="";list.innerHTML='<p class="small">No saved workouts found in Firestore.</p>';} else{controls.innerHTML=`<div class="info"><b>Delete a saved workout</b><p class="small" style="margin:0 0 8px;">Choose a workout, tap “Prepare delete”, then confirm.</p><label>Select workout</label><select id="deleteSelect">${state.history.map((h,index)=>`<option value="${index}">${escapeHtml(h.date)} — ${escapeHtml(h.workoutName)} — ${escapeHtml(h.firestoreId||h.id||index)}</option>`).join("")}</select><button class="secondary" type="button" style="margin-top:8px;width:100%;" onclick="prepareSelectedWorkoutDelete()">Prepare delete</button><div id="deleteStatus"></div></div>`;list.innerHTML=state.history.map((h,index)=>{const loggedCount=(h.exercises||[]).filter(e=>e.type==="cardio"?(e.duration||e.level||e.speed):(e.sets&&e.sets.length)).length;const exerciseHtml=(h.exercises||[]).map(e=>{if(e.type==="cardio")return `<p><b>${escapeHtml(e.name)}</b><br>Cardio: ${escapeHtml(e.cardioExercise||"-")} · Level: ${escapeHtml(e.level||"-")} · Speed: ${escapeHtml(e.speed||"-")} · Duration: ${escapeHtml(e.duration||"-")}<br>Notes: ${escapeHtml(e.notes||"-")}</p>`;const setText=(e.sets||[]).map(s=>typeof s==="string"?s:`Set ${s.set}: ${s.weight||"-"} / ${s.reps||"-"}`).join(", ");return `<p><b>${escapeHtml(e.name)}</b><br>Sets: ${escapeHtml(setText||"Not logged")}<br>Form: ${escapeHtml(e.formOk||"-")} · Pain: ${escapeHtml(e.pain||"-")}<br>Notes: ${escapeHtml(e.notes||"-")}</p>`;}).join("");return `<div class="history-item"><b>${escapeHtml(h.date)} — ${escapeHtml(h.workoutName)}</b><div class="small">${loggedCount} exercises logged · saved with ${escapeHtml(h.appVersion||"earlier version")}</div><div style="margin:8px 0;"><button class="secondary smallbtn" type="button" onclick="prepareWorkoutDelete(${index})">Prepare delete</button></div><details><summary>View details</summary>${exerciseHtml}</details></div>`;}).join("");} preview.textContent=JSON.stringify(state,null,2);}
+function prepareSelectedWorkoutDelete(){const select=document.getElementById("deleteSelect");if(!select)return;prepareWorkoutDelete(Number(select.value));}
+function prepareWorkoutDelete(index){const numericIndex=Number(index),status=document.getElementById("deleteStatus");if(!status)return;if(!Number.isInteger(numericIndex)||numericIndex<0||numericIndex>=state.history.length){status.innerHTML='<div class="delete-status"><strong>Could not find that workout.</strong></div>';return;}const workout=state.history[numericIndex];status.innerHTML=`<div class="delete-status"><strong>Ready to delete:</strong>${escapeHtml(workout.date)} — ${escapeHtml(workout.workoutName)}<button class="danger" type="button" style="margin-top:8px;width:100%;" onclick="confirmPreparedWorkoutDelete(${numericIndex})">Confirm delete this workout</button><button class="secondary" type="button" style="margin-top:8px;width:100%;" onclick="cancelPreparedWorkoutDelete()">Cancel</button></div>`;}
+function cancelPreparedWorkoutDelete(){const status=document.getElementById("deleteStatus");if(status)status.innerHTML="";}
+async function confirmPreparedWorkoutDelete(index){if(!currentUser){alert("Please sign in first.");return;}const numericIndex=Number(index);if(!Number.isInteger(numericIndex)||numericIndex<0||numericIndex>=state.history.length)return;const workout=state.history[numericIndex];if(!workout.firestoreId){alert("This workout has no Firestore ID, so it cannot be deleted remotely.");return;}try{await deleteDoc(doc(db,"users",currentUser.uid,"workouts",workout.firestoreId));state.history.splice(numericIndex,1);backupLocal();renderHistory();setStatus(`Deleted remote workout · signed in as ${currentUser.email}`);}catch(error){console.error(error);alert("Remote delete failed: "+error.message);}}
+function downloadJson(){const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="full_body_workout_tracker_export.json";a.click();URL.revokeObjectURL(url);}
+async function copySummary(){const latest=state.history.slice(0,3);const text=latest.map(h=>`${h.date} — ${h.workoutName}\n`+(h.exercises||[]).map(e=>{if(e.type==="cardio")return `- ${e.name}: ${e.cardioExercise||"-"} | Level: ${e.level||"-"} | Speed: ${e.speed||"-"} | Duration: ${e.duration||"-"} | Notes: ${e.notes||"-"}`;const setText=(e.sets||[]).map(s=>typeof s==="string"?s:`Set ${s.set}: ${s.weight||"-"} / ${s.reps||"-"}`).join(", ");return `- ${e.name}: ${setText||"not logged"} | Form: ${e.formOk||"-"} | Pain: ${e.pain||"-"} | Notes: ${e.notes||"-"}`;}).join("\n")).join("\n\n");try{await navigator.clipboard.writeText(text||"No workouts logged yet.");alert("Feedback summary copied.");}catch(e){alert("Copy failed. Use Export JSON instead.");}}
+function escapeHtml(str){return String(str??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+window.showPanel=showPanel;window.saveCurrentWorkout=saveCurrentWorkout;window.downloadJson=downloadJson;window.copySummary=copySummary;window.addSet=addSet;window.removeLastSet=removeLastSet;window.prepareSelectedWorkoutDelete=prepareSelectedWorkoutDelete;window.prepareWorkoutDelete=prepareWorkoutDelete;window.confirmPreparedWorkoutDelete=confirmPreparedWorkoutDelete;window.cancelPreparedWorkoutDelete=cancelPreparedWorkoutDelete;
+function toggleAccountMenu(){
+  document.getElementById("accountMenuPanel").classList.toggle("open");
+}
+function closeAccountMenu(){
+  document.getElementById("accountMenuPanel").classList.remove("open");
+}
+document.getElementById("accountMenuBtn").addEventListener("click", toggleAccountMenu);
+document.addEventListener("click", function(event){
+  const menu = document.querySelector(".account-menu");
+  if (menu && !menu.contains(event.target)) closeAccountMenu();
+});
+document.getElementById("signInBtn").addEventListener("click", async function(){ closeAccountMenu(); await handleSignIn(); });
+document.getElementById("signOutBtn").addEventListener("click", async function(){
+  closeAccountMenu();
+  if (confirm("Sign out of Workout Tracker?")) await handleSignOut();
+});
+document.getElementById("versionText").textContent=`${state.appVersion} · Created ${state.createdDate}`;
+renderWorkout("A");renderWorkout("B");renderHistory();
+</script>
+</body></html>
